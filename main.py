@@ -59,7 +59,6 @@ def saveMD5(filename):
         sys.stderr.write("Error opening config file " + str(configfile))
         sys.exit(1)
     config.set(platform.system(), filename + '_md5', md5.new(file.read()).hexdigest())
-    config.set(platform.system(), "a", "a")
     config.write(open(configfile, "w"))
 
 def main():
