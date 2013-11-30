@@ -2,7 +2,7 @@
 # coding=utf-8
 
 import clean
-import ConfigParser,platform,md5
+import sys, ConfigParser,platform,md5
 
 configfile = "clean.ini"
 db_name = "clean.db"
@@ -31,7 +31,11 @@ def getFilenames():
 
 # 功能：判断该文件是否修改过，返回真，说明修改过
 def fileWasModified(filename):
-    file = open(filename, 'r')
+    try:
+        file = open(filename, 'r')
+    except IOError:
+        sys.stderr.write("open " + filename + " Error")
+        sys.exit(1)
     config = ConfigParser.ConfigParser()
     try:
         config.read(configfile)
@@ -43,7 +47,7 @@ def fileWasModified(filename):
     for sec in configSections:
         if platform.system() == sec:
             try:
-                old_md5 = config.get(sec, filename + '_md5', '1')
+                old_md5 = config.get(sec, filename.replace(':', '>') + '_md5', '1')
             except ConfigParser.NoOptionError:
                 old_md5 = '1'
 
@@ -53,12 +57,14 @@ def fileWasModified(filename):
 def saveMD5(filename):
     file = open(filename, 'r')
     config = ConfigParser.ConfigParser()
+    # 设置为大小写敏感
+    config.optionxform = str
     try:
         config.read(configfile)
     except (IOError, OSError):
         sys.stderr.write("Error opening config file " + str(configfile))
         sys.exit(1)
-    config.set(platform.system(), filename + '_md5', md5.new(file.read()).hexdigest())
+    config.set(platform.system(), filename.replace(':', '>') + '_md5', md5.new(file.read()).hexdigest())
     config.write(open(configfile, "w"))
 
 def main():

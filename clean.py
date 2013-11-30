@@ -8,6 +8,7 @@ import os
 db_name = "E:\Programming\Language\Python\Code\my\Todo\My.s3db" # 数据库名称
 Question_fileName = r"E:\Question" # 待解决文件名
 Question_tableName = "TB_Question"
+delimiter = '|'
 
 # 参数：db_name，保存的数据库
 #       table_name, 表名
@@ -28,7 +29,7 @@ def clean(db_name, table_name, filename):
 
     for line in lines :
         line = line.strip('\n')
-        fields = line.split()
+        fields = line.split(delimiter)
         if  len(fields) == 3 :
             c.execute("insert into %s values('%s', '%s', '%s', NULL)"
                     % (table_name, fields[0], fields[1], fields[2]))
