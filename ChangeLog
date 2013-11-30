@@ -1,5 +1,7 @@
 2013-11-30  QianChengLong   <qian_cheng_long@163.com>
 
+        * v1.0.1
+
 	* main.py:修复win下路径中含':'存放时导致的ini不能读取错误
 	* clean.py:分隔符改为'|'
 	* main.py:整理数据，统一为UTF-8
