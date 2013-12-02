@@ -1,11 +1,15 @@
 #! /bin/env python2
 # coding=utf-8
 
-import clean
-import sys, ConfigParser,platform,md5
+import sys, ConfigParser,platform, md5, os
 
-configfile = "clean.ini"
-db_name = "clean.db"
+config_dir = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(config_dir)
+
+import clean
+
+configfile = os.path.join(config_dir, "clean.ini")
+db_name = os.path.join(config_dir, "clean.db")
 todo_tablename = "TB_Todo"
 question_tablename = 'TB_Question'
 

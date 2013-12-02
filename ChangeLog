@@ -1,3 +1,14 @@
+2013-12-02  QianChengLong   <qian_cheng_long@163.com>
+
+	* 1.0.3
+	* main.py:修复Linux下，在符号链接的执行时，目录错误
+
+2013-12-01  QianChengLong   <qian_cheng_long@163.com>
+
+	* v1.0.2
+
+	* main.py:修复Linux下，在其他目录下执行时，数据文件目录错误
+
 2013-11-30  QianChengLong   <qian_cheng_long@163.com>
 
         * v1.0.1
