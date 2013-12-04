@@ -1,21 +1,20 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # coding=utf-8
 
 import sqlite3
 import os
 
-# 变量定义
-db_name = "E:\Programming\Language\Python\Code\my\Todo\My.s3db" # 数据库名称
-Question_fileName = r"E:\Question" # 待解决文件名
-Question_tableName = "TB_Question"
-delimiter = '|'
 
-# 参数：db_name，保存的数据库
-#       table_name, 表名
-#       filename, 要整理的文件名
-def clean(db_name, table_name, filename):
+def clean(db_name, table_name, filename, delimiter='|'):
+    """ clean file up to table of database
+
+        db_name，保存的数据库
+        table_name, 表名
+        filename, 要整理的文件名
+    """
+
     # 检查文件是否存在
-    if os.path.isfile(filename) == False :
+    if not os.path.isfile(filename):
         exit(-1)
 
     # 数据库操作
@@ -23,24 +22,25 @@ def clean(db_name, table_name, filename):
     c = db.cursor()
 
     # 读取文件内容
-    file = open(filename, 'r')
+    file = open(filename, 'rb')
     lines = file.readlines()
     update_lines = ""
 
-    for line in lines :
+    for line in lines:
         line = line.strip('\n')
         fields = line.split(delimiter)
-        if  len(fields) == 3 :
+        if len(fields) == 3:
             c.execute("insert into %s values('%s', '%s', '%s', NULL)"
-                    % (table_name, fields[0], fields[1], fields[2]))
-        elif len(fields) == 4 :
+                      % (table_name, fields[0], fields[1], fields[2]))
+        elif len(fields) == 4:
             c.execute("insert into %s values('%s', '%s', '%s', '%s')"
-                    % (table_name, fields[0], fields[1], fields[2], fields[3]))
-        else :
+                      % (table_name, fields[0], fields[1], fields[2],
+                         fields[3]))
+        else:
             update_lines += line + '\n'
 
     file.close()
-    file = open(filename, 'w')
+    file = open(filename, 'wb')
     file.writelines(update_lines)
     file.close()
 

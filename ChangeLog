@@ -1,3 +1,13 @@
+2013-12-04  QianChengLong   <qian_cheng_long@163.com>
+
+	* 1.0.5
+	* clean.py:open打开模式设置为二进制打开，阻止行结束符转换
+
+2013-12-03  QianChengLong   <qian_cheng_long@163.com>
+
+	* 1.0.4
+	* *.py:PEP8规范
+
 2013-12-02  QianChengLong   <qian_cheng_long@163.com>
 
 	* 1.0.3

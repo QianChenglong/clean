@@ -1,3 +1,5 @@
+.ropeproject
+__pycache__
 doc
 dirty
 test

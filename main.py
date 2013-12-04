@@ -1,7 +1,11 @@
 #! /bin/env python2
 # coding=utf-8
 
-import sys, ConfigParser,platform, md5, os
+import sys
+import ConfigParser
+import platform
+import md5
+import os
 
 config_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(config_dir)
@@ -13,8 +17,9 @@ db_name = os.path.join(config_dir, "clean.db")
 todo_tablename = "TB_Todo"
 question_tablename = 'TB_Question'
 
-# 功能：根据操作系统，读取clean.ini，返回相应待处理的文件名
+
 def getFilenames():
+    '功能：根据操作系统，读取clean.ini，返回相应待处理的文件名'
     todo = ""
     question = ""
 
@@ -33,8 +38,9 @@ def getFilenames():
 
     return (todo, question)
 
-# 功能：判断该文件是否修改过，返回真，说明修改过
+
 def fileWasModified(filename):
+    "功能：判断该文件是否修改过，返回真，说明修改过"
     try:
         file = open(filename, 'r')
     except IOError:
@@ -51,14 +57,16 @@ def fileWasModified(filename):
     for sec in configSections:
         if platform.system() == sec:
             try:
-                old_md5 = config.get(sec, filename.replace(':', '>') + '_md5', '1')
+                old_md5 = config.get(
+                    sec, filename.replace(':', '>') + '_md5', '1')
             except ConfigParser.NoOptionError:
                 old_md5 = '1'
 
     return md5.new(file.read()).hexdigest() != old_md5
 
-# 功能：保存文件md5
+
 def saveMD5(filename):
+    '功能：保存文件md5'
     file = open(filename, 'r')
     config = ConfigParser.ConfigParser()
     # 设置为大小写敏感
@@ -68,8 +76,10 @@ def saveMD5(filename):
     except (IOError, OSError):
         sys.stderr.write("Error opening config file " + str(configfile))
         sys.exit(1)
-    config.set(platform.system(), filename.replace(':', '>') + '_md5', md5.new(file.read()).hexdigest())
+    config.set(platform.system(), filename.replace(':', '>')
+               + '_md5', md5.new(file.read()).hexdigest())
     config.write(open(configfile, "w"))
+
 
 def main():
     # 获得相应平台要处理的文件名
