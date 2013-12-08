@@ -4,3 +4,4 @@ doc
 dirty
 test
 *.pyc
+*.db
