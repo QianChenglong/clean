@@ -5,3 +5,7 @@ dirty
 test
 *.pyc
 *.db
+<<<<<<< HEAD
+=======
+*.log
+>>>>>>> new_branch_name

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # coding=utf-8
 
 import sqlite3
@@ -20,6 +20,22 @@ def clean(db_name, table_name, filename, delimiter='|'):
     # 数据库操作
     db = sqlite3.connect(db_name)
     c = db.cursor()
+
+    # 若表不存在，则新建
+    c.execute("""
+              create table if not exists TB_ToDo (
+              content     TEXT,
+              start_time  TEXT,
+              finish_time TEXT,
+              remark      TEXT)
+              """)
+    c.execute("""
+              create table if not exists TB_Question (
+              content     TEXT,
+              start_time  TEXT,
+              finish_time TEXT,
+              remark      TEXT)
+              """)
 
     # 读取文件内容
     file = open(filename, 'rb')
