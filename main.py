@@ -6,6 +6,7 @@ import ConfigParser
 import platform
 import md5
 import os
+import logging
 
 config_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(config_dir)
@@ -27,7 +28,7 @@ def getFilenames():
     try:
         config.read(configfile)
     except (IOError, OSError):
-        sys.stderr.write("Error opening config file " + str(configfile))
+        logging.error("Error opening config file " + str(configfile))
         sys.exit(1)
 
     configSections = config.sections()
@@ -44,13 +45,13 @@ def fileWasModified(filename):
     try:
         file = open(filename, 'r')
     except IOError:
-        sys.stderr.write("open " + filename + " Error")
+        logging.error("open " + filename + " Error")
         sys.exit(1)
     config = ConfigParser.ConfigParser()
     try:
         config.read(configfile)
     except (IOError, OSError):
-        sys.stderr.write("Error opening config file " + str(configfile))
+        logging.error("Error opening config file " + str(configfile))
         sys.exit(1)
 
     configSections = config.sections()
@@ -74,7 +75,7 @@ def saveMD5(filename):
     try:
         config.read(configfile)
     except (IOError, OSError):
-        sys.stderr.write("Error opening config file " + str(configfile))
+        logging.error("Error opening config file " + str(configfile))
         sys.exit(1)
     config.set(platform.system(), filename.replace(':', '>')
                + '_md5', md5.new(file.read()).hexdigest())
@@ -88,15 +89,19 @@ def main():
     if fileWasModified(todo_filename):
         clean.clean(db_name, todo_tablename, todo_filename)
         saveMD5(todo_filename)
-        print("clean todo up!")
+        logging.info("clean todo up!")
     else:
-        print("todo is clean!")
+        logging.info("todo is clean!")
     if fileWasModified(question_filename):
         clean.clean(db_name, question_tablename, question_filename)
         saveMD5(question_filename)
-        print("clean question up!")
+        logging.info("clean question up!")
     else:
-        print("question is clean!")
+        logging.info("question is clean!")
 
 if __name__ == "__main__":
+    logging.basicConfig(filename='clean.log',
+                        format='%(asctime)s:%(levelname)s:%(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.INFO)
     main()
